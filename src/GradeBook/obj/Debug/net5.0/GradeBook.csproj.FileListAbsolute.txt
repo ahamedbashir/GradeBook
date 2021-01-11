@@ -1,0 +1,16 @@
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\bin\Debug\net5.0\GradeBook.exe
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\bin\Debug\net5.0\GradeBook.deps.json
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\bin\Debug\net5.0\GradeBook.runtimeconfig.json
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\bin\Debug\net5.0\GradeBook.runtimeconfig.dev.json
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\bin\Debug\net5.0\GradeBook.dll
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\bin\Debug\net5.0\ref\GradeBook.dll
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\bin\Debug\net5.0\GradeBook.pdb
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\obj\Debug\net5.0\GradeBook.csprojAssemblyReference.cache
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\obj\Debug\net5.0\GradeBook.GeneratedMSBuildEditorConfig.editorconfig
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\obj\Debug\net5.0\GradeBook.AssemblyInfoInputs.cache
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\obj\Debug\net5.0\GradeBook.AssemblyInfo.cs
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\obj\Debug\net5.0\GradeBook.csproj.CoreCompileInputs.cache
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\obj\Debug\net5.0\GradeBook.dll
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\obj\Debug\net5.0\ref\GradeBook.dll
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\obj\Debug\net5.0\GradeBook.pdb
+D:\Notes4Pro\ProgrammingLang\C#\pluralsight\gradebook\src\GradeBook\obj\Debug\net5.0\GradeBook.genruntimeconfig.cache
