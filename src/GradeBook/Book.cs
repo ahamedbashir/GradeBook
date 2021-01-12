@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace GradeBook
 {
-    class Book
+    public class Book
     {
         List<Double> grades;
         // List<Grade> courseGrade;
-        string name;
+        public string Name;
 
         public Book(string name)
         {
-            this.name = name;
+            this.Name = name;
             this.grades = new List<double>();
             // this.courseGrade = new List<Grade>();
         }
@@ -21,7 +21,33 @@ namespace GradeBook
             {
                 this.grades.Add(grade);
             }
+            else {
+                throw new ArgumentException($"Invalid {nameof(grade)}");
+            }
         }
+
+        public void AddLetterGrade(char letter)
+        {
+            switch(letter)
+            {
+                case 'A':
+                    addGrade(90);
+                    break;
+                case 'B':
+                    addGrade(80);
+                    break;
+                case 'C':
+                    addGrade(70);
+                    break;
+                case 'D':
+                    addGrade(60);
+                    break;
+                default:
+                    addGrade(0);
+                    break;    
+            }
+        }
+
         public int getGradeCount()
         {
             return this.grades.Count;
@@ -44,6 +70,7 @@ namespace GradeBook
 
         public double getMinGrade()
         {
+            if(this.grades.Count == 0) return 0.0;
             var min = double.MaxValue;
             this.grades.ForEach(grade =>
             {
@@ -55,6 +82,8 @@ namespace GradeBook
 
         public double getMaxGrade()
         {
+            if(this.grades.Count == 0) return 0.0;
+            
             var max = double.MinValue;
             this.grades.ForEach(grade =>
             {
@@ -63,11 +92,30 @@ namespace GradeBook
 
             return max;
         }
-
-        public void showStatistic() {
-            Console.WriteLine($"The average grade is : {this.getAverageGrade():n2}");
-            Console.WriteLine($"The max grade is : {this.getMaxGrade():n2}");
-            Console.WriteLine($"The min grade is : {this.getMinGrade():n2}");
+        public Statistics getStatistics() {
+            double avg = this.getAverageGrade();
+            double high = this.getMaxGrade();
+            double min = this.getMinGrade();
+            char Letter;
+            switch(avg)
+            {
+                case var d when d >= 90.0:
+                    Letter = 'A';
+                    break;
+                case var d when d >= 80.0:
+                    Letter = 'B';
+                    break;
+                case var d when d >= 70.0:
+                    Letter = 'C';
+                    break;
+                case var d when d >= 60.0:
+                    Letter = 'D';
+                    break;
+                default:
+                    Letter = 'F';
+                    break;
+            }
+            return new Statistics(avg, high, min, Letter);
         }
 
     }
