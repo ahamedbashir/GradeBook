@@ -3,60 +3,84 @@ using System.Collections.Generic;
 
 namespace GradeBook
 {
-    public class Book
-    {
-        List<Double> grades;
-        // List<Grade> courseGrade;
-        public string Name;
+    public delegate void GradeAddedDelegate(object sender, EventArgs args);
 
-        public Book(string name)
+    public class NamedObject
+    {
+        public NamedObject(string name)
+        {
+            Name = name;
+        }
+
+        public string Name
+        {
+            get;
+            set;
+        }
+    }
+
+    public class Book : NamedObject
+    {
+        public Book(string name) : base(name)
         {
             this.Name = name;
             this.grades = new List<double>();
-            // this.courseGrade = new List<Grade>();
         }
-        public void addGrade(double grade)
+
+        public Book(string name, string category) : base(name) {
+            this.Name = name;
+            this.grades = new List<double>();
+            this.category = category;
+        }
+
+        public void AddGrade(double grade)
         {
             if(grade >= 0 && grade <= 100)
             {
                 this.grades.Add(grade);
+                if(GradeAdded != null)
+                {
+                    GradeAdded(this, new EventArgs());
+                }
             }
             else {
                 throw new ArgumentException($"Invalid {nameof(grade)}");
             }
         }
 
-        public void AddLetterGrade(char letter)
+        public void AddGrade(char letter)
         {
             switch(letter)
             {
                 case 'A':
-                    addGrade(90);
+                    AddGrade(90);
                     break;
                 case 'B':
-                    addGrade(80);
+                    AddGrade(80);
                     break;
                 case 'C':
-                    addGrade(70);
+                    AddGrade(70);
                     break;
                 case 'D':
-                    addGrade(60);
+                    AddGrade(60);
                     break;
                 default:
-                    addGrade(0);
+                    AddGrade(0);
                     break;    
             }
         }
 
-        public int getGradeCount()
+        public event GradeAddedDelegate GradeAdded;
+
+        public int GetGradeCount()
         {
             return this.grades.Count;
         }
 
-        public double getAverageGrade()
+        public double GetAverageGrade()
         {
             var total = 0.0;
-            int count = getGradeCount();
+            int count = GetGradeCount();
             if (count == 0)
             {
                 return 0.0;
@@ -68,7 +92,7 @@ namespace GradeBook
             return total / count;
         }
 
-        public double getMinGrade()
+        public double GetMinGrade()
         {
             if(this.grades.Count == 0) return 0.0;
             var min = double.MaxValue;
@@ -80,7 +104,7 @@ namespace GradeBook
             return min;
         }
 
-        public double getMaxGrade()
+        public double GetMaxGrade()
         {
             if(this.grades.Count == 0) return 0.0;
             
@@ -92,10 +116,10 @@ namespace GradeBook
 
             return max;
         }
-        public Statistics getStatistics() {
-            double avg = this.getAverageGrade();
-            double high = this.getMaxGrade();
-            double min = this.getMinGrade();
+        public Statistics GetStatistics() {
+            double avg = this.GetAverageGrade();
+            double high = this.GetMaxGrade();
+            double min = this.GetMinGrade();
             char Letter;
             switch(avg)
             {
@@ -117,6 +141,12 @@ namespace GradeBook
             }
             return new Statistics(avg, high, min, Letter);
         }
+
+        private List<Double> grades;
+        // List<Grade> courseGrade;
+        // private string name;
+
+        readonly string category = "Science";
 
     }
 
