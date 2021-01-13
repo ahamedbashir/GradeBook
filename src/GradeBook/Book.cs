@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GradeBook
 {
@@ -19,21 +20,77 @@ namespace GradeBook
         }
     }
 
-    public class Book : NamedObject
+    public interface IBook
     {
-        public Book(string name) : base(name)
+        void AddGrade(double grade);
+        Statistics GetStatistics();
+        string Name {get;}
+        event GradeAddedDelegate GradeAdded;
+    }
+
+    public abstract class Book : NamedObject, IBook
+    {
+        protected Book(string name) : base(name)
+        {
+        }
+
+        public abstract event GradeAddedDelegate GradeAdded;
+        public abstract void AddGrade(double grade);
+        public abstract Statistics GetStatistics();
+    }
+
+    public class DiskBook : Book
+    {
+        public DiskBook(string name) : base(name)
+        {
+        }
+
+        public override event GradeAddedDelegate GradeAdded;
+
+        public override void AddGrade(double grade)
+        {
+            using(var writer = File.AppendText($"{Name}.txt"))
+            {
+                writer.WriteLine(grade);
+                if(GradeAdded != null)
+                {
+                    GradeAdded(this, new EventArgs());
+                }
+            }
+        }
+
+        public override Statistics GetStatistics()
+        {
+            var result = new Statistics();
+
+            using(var reader = File.OpenText($"{Name}.txt"))
+            {
+                var line = reader.ReadLine();
+                while(line != null)
+                {
+                    var grade = double.Parse(line);
+                    result.Add(grade);
+                    line = reader.ReadLine();
+                }
+            }
+            return result;
+        }
+    }
+    public class InMemoryBook : Book
+    {
+        public InMemoryBook(string name) : base(name)
         {
             this.Name = name;
             this.grades = new List<double>();
         }
 
-        public Book(string name, string category) : base(name) {
+        public InMemoryBook(string name, string category) : base(name) {
             this.Name = name;
             this.grades = new List<double>();
             this.category = category;
         }
 
-        public void AddGrade(double grade)
+        public override void AddGrade(double grade)
         {
             if(grade >= 0 && grade <= 100)
             {
@@ -48,115 +105,22 @@ namespace GradeBook
             }
         }
 
-        public void AddGrade(char letter)
-        {
-            switch(letter)
+        public override event GradeAddedDelegate GradeAdded;
+
+        public override Statistics GetStatistics() {
+            var result = new Statistics();
+
+            for(var index = 0; index < grades.Count; index++)
             {
-                case 'A':
-                    AddGrade(90);
-                    break;
-                case 'B':
-                    AddGrade(80);
-                    break;
-                case 'C':
-                    AddGrade(70);
-                    break;
-                case 'D':
-                    AddGrade(60);
-                    break;
-                default:
-                    AddGrade(0);
-                    break;    
+                result.Add(grades[index]);
             }
-        }
-
-        public event GradeAddedDelegate GradeAdded;
-
-        public int GetGradeCount()
-        {
-            return this.grades.Count;
-        }
-
-        public double GetAverageGrade()
-        {
-            var total = 0.0;
-            int count = GetGradeCount();
-            if (count == 0)
-            {
-                return 0.0;
-            }
-            this.grades.ForEach(grade =>
-            {
-                total += grade;
-            });
-            return total / count;
-        }
-
-        public double GetMinGrade()
-        {
-            if(this.grades.Count == 0) return 0.0;
-            var min = double.MaxValue;
-            this.grades.ForEach(grade =>
-            {
-                min = Math.Min(min, grade);
-            });
-
-            return min;
-        }
-
-        public double GetMaxGrade()
-        {
-            if(this.grades.Count == 0) return 0.0;
             
-            var max = double.MinValue;
-            this.grades.ForEach(grade =>
-            {
-                max = Math.Max(max, grade);
-            });
-
-            return max;
-        }
-        public Statistics GetStatistics() {
-            double avg = this.GetAverageGrade();
-            double high = this.GetMaxGrade();
-            double min = this.GetMinGrade();
-            char Letter;
-            switch(avg)
-            {
-                case var d when d >= 90.0:
-                    Letter = 'A';
-                    break;
-                case var d when d >= 80.0:
-                    Letter = 'B';
-                    break;
-                case var d when d >= 70.0:
-                    Letter = 'C';
-                    break;
-                case var d when d >= 60.0:
-                    Letter = 'D';
-                    break;
-                default:
-                    Letter = 'F';
-                    break;
-            }
-            return new Statistics(avg, high, min, Letter);
+            return result;
         }
 
         private List<Double> grades;
-        // List<Grade> courseGrade;
-        // private string name;
 
         readonly string category = "Science";
 
-    }
-
-    class Grade {
-        double grade;
-        string course;
-
-        public Grade(String course, double grade) {
-            this.grade = grade;
-            this.course = course;
-        }
     }
 }
